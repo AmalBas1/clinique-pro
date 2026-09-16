@@ -4,9 +4,8 @@ import org.example.cliniquepro.dto.MessageDTO;
 import java.util.List;
 
 public interface MessageService {
-    MessageDTO save(MessageDTO messageDTO);
-    MessageDTO update(MessageDTO messageDTO);
-    List<MessageDTO> findAll();
-    MessageDTO findOne(Long id);
-    void delete(Long id);
+    MessageDTO creerMessage(MessageDTO messageDTO);
+    MessageDTO recupererMessageParId(Long id);
+    List<MessageDTO> recupererMessagesParRendezVous(Long rendezVousId);
+    void supprimerMessage(Long id);
 }
