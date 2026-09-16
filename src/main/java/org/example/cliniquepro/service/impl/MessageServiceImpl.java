@@ -8,12 +8,15 @@ import org.example.cliniquepro.mapper.MessageMapper;
 import org.example.cliniquepro.repository.MessageRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.MessageService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -62,9 +65,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MessageDTO> recupererMessagesParRendezVous(Long rendezVousId) {
-        List<Message> messages = messageRepository.findByRendezVousId(rendezVousId);
-        return messageMapper.toDtoList(messages);
+    public Page<MessageDTO> recupererMessagesParRendezVous(Long rendezVousId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<Message> messages = messageRepository.findByRendezVousId(rendezVousId, pageable);
+        return messages.map(messageMapper::toDTO);
     }
 
     @Override

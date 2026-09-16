@@ -2,15 +2,16 @@ package org.example.cliniquepro.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.cliniquepro.dto.UserDTO;
 import org.example.cliniquepro.entity.User;
 import org.example.cliniquepro.mapper.UserMapper;
 import org.example.cliniquepro.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Collections;
-
 import org.example.cliniquepro.service.UserService;
-import org.example.cliniquepro.dto.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +36,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return userMapper.toDtoList(users);
+    public Page<UserDTO> getAllUsers(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<User> users = userRepository.findAll(pageable);
+        return users.map(userMapper::toDTO);
     }
 
     @Override

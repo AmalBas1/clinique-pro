@@ -9,13 +9,16 @@ import org.example.cliniquepro.mapper.NotificationMapper;
 import org.example.cliniquepro.repository.NotificationRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.NotificationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -128,9 +131,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<NotificationDTO> recupererNotificationsParRendezVous(Long rendezVousId) {
-        List<Notification> notifications = notificationRepository.findByRendezVousId(rendezVousId);
-        return notificationMapper.toDtoList(notifications);
+    public Page<NotificationDTO> recupererNotificationsParRendezVous(Long rendezVousId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<Notification> notifications = notificationRepository.findByRendezVousId(rendezVousId, pageable);
+        return notifications.map(notificationMapper::toDTO);
     }
 
     @Override

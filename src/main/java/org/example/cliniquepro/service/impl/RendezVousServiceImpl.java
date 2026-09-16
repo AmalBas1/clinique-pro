@@ -2,6 +2,7 @@ package org.example.cliniquepro.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.cliniquepro.dto.RendezVousDTO;
 import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.RendezVous;
@@ -10,12 +11,12 @@ import org.example.cliniquepro.mapper.RendezVousMapper;
 import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Collections;
-
 import org.example.cliniquepro.service.RendezVousService;
-import org.example.cliniquepro.dto.RendezVousDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -56,10 +57,10 @@ public class RendezVousServiceImpl implements RendezVousService {
     }
 
     @Override
-
-    public List<RendezVousDTO> recupererTousLesRendezVous() {
-        List<RendezVous> rendezVousList = rendezVousRepository.findAll();
-        return rendezVousMapper.toDtoList(rendezVousList);
+    public Page<RendezVousDTO> recupererTousLesRendezVous(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<RendezVous> rendezVous = rendezVousRepository.findAll(pageable);
+        return rendezVous.map(rendezVousMapper::toDTO);
     }
 
     @Override

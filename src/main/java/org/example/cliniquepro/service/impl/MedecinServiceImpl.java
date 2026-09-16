@@ -2,17 +2,18 @@ package org.example.cliniquepro.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.cliniquepro.dto.MedecinDTO;
 import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.User;
 import org.example.cliniquepro.mapper.MedecinMapper;
 import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Collections;
-
 import org.example.cliniquepro.service.MedecinService;
-import org.example.cliniquepro.dto.MedecinDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +46,10 @@ public class MedecinServiceImpl implements MedecinService {
     }
 
     @Override
-    public List<MedecinDTO> recupererTousLesMedecins() {
-        List<Medecin> medecins = medecinRepository.findAll();
-        return medecinMapper.toDtoList(medecins);
+    public Page<MedecinDTO> recupererTousLesMedecins(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<Medecin> medecins = medecinRepository.findAll(pageable);
+        return medecins.map(medecinMapper::toDTO);
     }
 
     @Override

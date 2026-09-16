@@ -2,6 +2,7 @@ package org.example.cliniquepro.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.cliniquepro.dto.PatientDTO;
 import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.User;
@@ -9,12 +10,12 @@ import org.example.cliniquepro.mapper.PatientMapper;
 import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Collections;
-
 import org.example.cliniquepro.service.PatientService;
-import org.example.cliniquepro.dto.PatientDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -54,9 +55,10 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientDTO> recupererTousLesPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        return patientMapper.toDtoList(patients);
+    public Page<PatientDTO> recupererTousLesPatients(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<Patient> patients = patientRepository.findAll(pageable);
+        return patients.map(patientMapper::toDTO);
     }
 
     @Override
