@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 class UserServiceImplTest {
 
-    @Autowired    private UserService userService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserRepository userRepository;
 

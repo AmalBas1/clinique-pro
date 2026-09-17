@@ -17,12 +17,12 @@ import org.example.cliniquepro.service.MessageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 class MessageServiceImplTest {
 
-    @Autowired    private MessageService messageService;
+    @Autowired
+    private MessageService messageService;
     @Autowired
     private MessageRepository messageRepository;
 
@@ -65,13 +66,13 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1991, 1, 1), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1991, 1, 1), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Generaliste", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Generaliste", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 1, 15, 9, 0), StatutRendezVous.PENDING, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 1, 15, 9, 0), StatutRendezVous.PENDING, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         MessageDTO dto = new MessageDTO();
@@ -103,13 +104,13 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1987, 4, 4), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1987, 4, 4), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 2, 20, 10, 30), StatutRendezVous.CONFIRMED, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 2, 20, 10, 30), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         Message message = new Message(null, "Merci pour votre message", LocalDateTime.now(), "MEDECIN", rendezVous);
@@ -138,13 +139,13 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 9, 9), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 9, 9), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 3, 5, 11, 15), StatutRendezVous.CONFIRMED, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 3, 5, 11, 15), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         Message message1 = new Message(null, "Premier message", LocalDateTime.now(), "MEDECIN", rendezVous);

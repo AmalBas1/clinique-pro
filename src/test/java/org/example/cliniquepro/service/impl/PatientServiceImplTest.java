@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 class PatientServiceImplTest {
 
-    @Autowired    private PatientService patientService;
+    @Autowired
+    private PatientService patientService;
     @Autowired
     private PatientRepository patientRepository;
 
@@ -44,7 +44,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Martin", "Alice", "0600000000", "Cardiologie", user, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Martin", "Alice", "0600000000", "Cardiologie", user);
         medecinRepository.save(medecin);
 
         PatientDTO dto = new PatientDTO();
@@ -72,7 +72,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Patient patient = new Patient(null, "Bernard", "Claire", "0711111111", "Lyon", LocalDate.of(1988, 6, 12), user, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Bernard", "Claire", "0711111111", "Lyon", LocalDate.of(1988, 6, 12), user, null);
         patientRepository.save(patient);
 
         PatientDTO resultat = patientService.recupererPatientParId(patient.getId());
@@ -90,7 +90,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Patient patient = new Patient(null, "Morel", "Luc", "0722222222", "Marseille", LocalDate.of(1978, 3, 18), user, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Morel", "Luc", "0722222222", "Marseille", LocalDate.of(1978, 3, 18), user, null);
         patientRepository.save(patient);
 
         PatientDTO dto = new PatientDTO();

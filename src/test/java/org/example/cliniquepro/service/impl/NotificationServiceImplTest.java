@@ -23,17 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
 class NotificationServiceImplTest {
 
-    @Autowired    private NotificationService notificationService;
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private NotificationRepository notificationRepository;
 
@@ -67,13 +66,13 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 5, 12, 8, 30), StatutRendezVous.CONFIRMED, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 5, 12, 8, 30), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         Notification notification = new Notification(null, "Notification importante", LocalDateTime.now(), TypeNotification.NOUVEAU_MESSAGE, rendezVous);
@@ -102,13 +101,13 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 6, 18, 15, 45), StatutRendezVous.CONFIRMED, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 6, 18, 15, 45), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         Notification notification1 = new Notification(null, "Première notification", LocalDateTime.now(), TypeNotification.RAPPEL_RDV, rendezVous);
@@ -140,13 +139,13 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient4", "Test", "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser, null, new ArrayList<>());
+        Patient patient = new Patient(null, "Patient4", "Test", "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser, null);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin4", "Test", "0633333333", "Generaliste", medecinUser, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Medecin4", "Test", "0633333333", "Generaliste", medecinUser);
         medecinRepository.save(medecin);
 
-        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 7, 3, 13, 15), StatutRendezVous.PENDING, patient, medecin, new ArrayList<>(), new ArrayList<>());
+        RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 7, 3, 13, 15), StatutRendezVous.PENDING, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
         Notification notification = new Notification(null, "À supprimer", LocalDateTime.now(), TypeNotification.RAPPEL_RDV, rendezVous);

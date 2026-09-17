@@ -10,9 +10,9 @@ import org.example.cliniquepro.service.MedecinService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,7 +63,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Lemoine", "Sophie", "0612345678", "Pediatrie", user, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Lemoine", "Sophie", "0612345678", "Pediatrie", user);
         medecinRepository.save(medecin);
 
         MedecinDTO resultat = medecinService.recupererMedecinParId(medecin.getId());
@@ -81,7 +81,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Dupont", "Jean", "0623456789", "Dermatologie", user, new ArrayList<>());
+        Medecin medecin = new Medecin(null, "Dupont", "Jean", "0623456789", "Dermatologie", user);
         medecinRepository.save(medecin);
 
         MedecinDTO dto = new MedecinDTO();
