@@ -17,5 +17,5 @@ public class PatientDTO {
     private LocalDate dateNaissance;
     private Long userId;
     private Long medecinId;
-    private List<Long> rendezVousIds;
+
 }

@@ -28,6 +28,6 @@ public class Medecin {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "medecin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RendezVous> rendezVous = new ArrayList<>();
+//    @OneToMany(mappedBy = "medecin", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<RendezVous> rendezVous = new ArrayList<>();
 }

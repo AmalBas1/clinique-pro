@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.NotificationDTO;
 import org.example.cliniquepro.entity.Notification;
 import org.example.cliniquepro.entity.RendezVous;
+import org.example.cliniquepro.enums.StatutRendezVous;
 import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.mapper.NotificationMapper;
 import org.example.cliniquepro.repository.NotificationRepository;
@@ -76,7 +77,11 @@ public class NotificationServiceImpl implements NotificationService {
 
             Notification savedNotification = notificationRepository.save(notification);
 
-            envoyerEmailNotification(rendezVous, notificationDTO.getType(), notificationDTO.getContenu());
+            try {
+                envoyerEmailNotification(rendezVous, notificationDTO.getType(), notificationDTO.getContenu());
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'envoi de l'e-mail de notification : " + e.getMessage());
+            }
 
             return notificationMapper.toDTO(savedNotification);
 
@@ -96,12 +101,14 @@ public class NotificationServiceImpl implements NotificationService {
                 switch (typeNotification) {
                     case ANNULATION_RDV:
                         sujet = "CliniquePro - Annulation de votre rendez-vous";
+                        rendezVous.setStatut(StatutRendezVous.CANCELLED);
                         break;
                     case RAPPEL_RDV:
                         sujet = "CliniquePro - Rappel de votre rendez-vous";
                         break;
                     case MEDECIN_INDISPONIBLE:
                         sujet = "CliniquePro - Indisponibilité de votre médecin";
+                        rendezVous.setStatut(StatutRendezVous.PENDING);
                         break;
                     case NOUVEAU_MESSAGE:
                         sujet = "CliniquePro - Nouveau message concernant votre rendez-vous";

@@ -15,6 +15,4 @@ public class RendezVousDTO {
     private StatutRendezVous statut;
     private Long patientId;
     private Long medecinId;
-    private List<Long> messageId;
-    private List<Long> notificationId;
 }

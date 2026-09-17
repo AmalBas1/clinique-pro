@@ -33,9 +33,9 @@ public class RendezVous {
     @JoinColumn(name = "medecin_id")
     private Medecin medecin;
 
-    @OneToMany(mappedBy = "rendezVous", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> messages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "rendezVous", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notification> notifications = new ArrayList<>();
+//    @OneToMany(mappedBy = "rendezVous", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Message> messages = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "rendezVous", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Notification> notifications = new ArrayList<>();
 }
