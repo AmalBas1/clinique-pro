@@ -35,7 +35,9 @@ CREATE TABLE rendezvous (
   date_rendez_vous DATETIME,
   statut VARCHAR(50),
   patient_id BIGINT,
-  FOREIGN KEY (patient_id) REFERENCES patients(id)
+  medecin_id BIGINT,
+  FOREIGN KEY (patient_id) REFERENCES patients(id),
+  FOREIGN KEY (medecin_id) REFERENCES medecins(id)
 ) ;
 
 CREATE TABLE messages (
