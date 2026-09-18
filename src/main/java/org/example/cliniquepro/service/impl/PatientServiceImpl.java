@@ -3,11 +3,9 @@ package org.example.cliniquepro.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.PatientDTO;
-import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.User;
 import org.example.cliniquepro.mapper.PatientMapper;
-import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.UserRepository;
 import org.example.cliniquepro.service.PatientService;
@@ -24,7 +22,6 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
-    private final MedecinRepository medecinRepository;
     private final PatientMapper patientMapper;
 
     @Override
@@ -37,11 +34,6 @@ public class PatientServiceImpl implements PatientService {
             patient.setUser(user);
         }
 
-        if (patientDTO.getMedecinId() != null) {
-            Medecin medecin = medecinRepository.findById(patientDTO.getMedecinId())
-                    .orElseThrow(() -> new RuntimeException("Médecin non trouvé avec l'ID : " + patientDTO.getMedecinId()));
-            patient.setMedecin(medecin);
-        }
 
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toDTO(savedPatient);
@@ -74,11 +66,6 @@ public class PatientServiceImpl implements PatientService {
             existingPatient.setUser(user);
         }
 
-        if (patientDTO.getMedecinId() != null) {
-            Medecin medecin = medecinRepository.findById(patientDTO.getMedecinId())
-                    .orElseThrow(() -> new RuntimeException("Médecin non trouvé avec l'ID : " + patientDTO.getMedecinId()));
-            existingPatient.setMedecin(medecin);
-        }
 
         Patient updatedPatient = patientRepository.save(existingPatient);
         return patientMapper.toDTO(updatedPatient);
