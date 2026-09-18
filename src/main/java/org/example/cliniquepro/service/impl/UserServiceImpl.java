@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,10 +21,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new RuntimeException("Cet e-mail est deja utilise !");
+        }
+
         User user = userMapper.toEntity(userDTO);
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
         User savedUser = userRepository.save(user);
         return userMapper.toDTO(savedUser);
     }
@@ -47,7 +56,13 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        userMapper.updateEntityFromDTO(userDTO, existingUser);
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setNom(userDTO.getNom());
+        existingUser.setPrenom(userDTO.getPrenom());
+        existingUser.setRole(userDTO.getRole());
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isBlank()) {
+            existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
 
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toDTO(updatedUser);

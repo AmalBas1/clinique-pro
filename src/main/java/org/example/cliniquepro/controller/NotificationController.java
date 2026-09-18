@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.NotificationDTO;
 import org.example.cliniquepro.service.NotificationService;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +22,19 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public NotificationDTO creerNotification(@RequestBody NotificationDTO notificationDTO) {
         return notificationService.creerNotification(notificationDTO);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
     public NotificationDTO recupererNotificationParId(@PathVariable Long id) {
         return notificationService.recupererNotificationParId(id);
     }
 
     @GetMapping("/rendez-vous/{rendezVousId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
     public Page<NotificationDTO> recupererNotificationsParRendezVous(
             @PathVariable Long rendezVousId,
             @RequestParam(defaultValue = "0") int page,
@@ -40,6 +44,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void supprimerNotification(@PathVariable Long id) {
         notificationService.supprimerNotification(id);
     }

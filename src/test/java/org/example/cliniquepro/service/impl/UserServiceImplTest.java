@@ -44,7 +44,7 @@ class UserServiceImplTest {
         user.setPassword("1234");
         user.setNom("Luc");
         user.setPrenom("Martin");
-        user.setRole(Role.AGENT);
+        user.setRole(Role.PATIENT);
         userRepository.save(user);
 
         UserDTO resultat = userService.getUserById(user.getId());
@@ -59,7 +59,7 @@ class UserServiceImplTest {
         user.setPassword("1234");
         user.setNom("AncienNom");
         user.setPrenom("Prenom");
-        user.setRole(Role.MANAGER);
+        user.setRole(Role.PATIENT);
         userRepository.save(user);
 
         UserDTO dto = new UserDTO();
@@ -67,7 +67,7 @@ class UserServiceImplTest {
         dto.setPassword("5678");
         dto.setNom("NouveauNom");
         dto.setPrenom("Prenom");
-        dto.setRole(Role.MANAGER);
+        dto.setRole(Role.MEDECIN);
 
         UserDTO resultat = userService.updateUser(user.getId(), dto);
 
