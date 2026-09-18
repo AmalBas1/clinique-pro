@@ -1,7 +1,6 @@
 package org.example.cliniquepro.service.impl;
 
 import org.example.cliniquepro.dto.PatientDTO;
-import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.User;
 import org.example.cliniquepro.enums.Role;
@@ -44,8 +43,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Martin", "Alice", "0600000000", "Cardiologie", user);
-        medecinRepository.save(medecin);
+
 
         PatientDTO dto = new PatientDTO();
         dto.setNom("Durand");
@@ -54,7 +52,6 @@ class PatientServiceImplTest {
         dto.setAdresse("Paris");
         dto.setDateNaissance(LocalDate.of(1990, 1, 5));
         dto.setUserId(user.getId());
-        dto.setMedecinId(medecin.getId());
 
         PatientDTO resultat = patientService.creerPatient(dto);
 
@@ -72,7 +69,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Patient patient = new Patient(null, "Bernard", "Claire", "0711111111", "Lyon", LocalDate.of(1988, 6, 12), user, null);
+        Patient patient = new Patient(null, "Bernard", "Claire", "0711111111", "Lyon", LocalDate.of(1988, 6, 12), user);
         patientRepository.save(patient);
 
         PatientDTO resultat = patientService.recupererPatientParId(patient.getId());
@@ -90,7 +87,7 @@ class PatientServiceImplTest {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
-        Patient patient = new Patient(null, "Morel", "Luc", "0722222222", "Marseille", LocalDate.of(1978, 3, 18), user, null);
+        Patient patient = new Patient(null, "Morel", "Luc", "0722222222", "Marseille", LocalDate.of(1978, 3, 18), user);
         patientRepository.save(patient);
 
         PatientDTO dto = new PatientDTO();

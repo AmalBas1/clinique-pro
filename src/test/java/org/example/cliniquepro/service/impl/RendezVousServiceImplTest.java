@@ -59,7 +59,7 @@ class RendezVousServiceImplTest {
         userMedecin.setRole(Role.MEDECIN);
         userRepository.save(userMedecin);
 
-        Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1992, 5, 20), userPatient, null);
+        Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1992, 5, 20), userPatient);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Cardiologie", userMedecin);
@@ -95,7 +95,7 @@ class RendezVousServiceImplTest {
         userMedecin.setRole(Role.MEDECIN);
         userRepository.save(userMedecin);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1989, 2, 15), userPatient, null);
+        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1989, 2, 15), userPatient);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", userMedecin);
@@ -127,7 +127,7 @@ class RendezVousServiceImplTest {
         userMedecin.setRole(Role.MEDECIN);
         userRepository.save(userMedecin);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 7, 3), userPatient, null);
+        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 7, 3), userPatient);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", userMedecin);

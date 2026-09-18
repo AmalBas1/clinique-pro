@@ -28,10 +28,5 @@ public class Patient {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "medecin_id")
-    private Medecin medecin;
 
-//    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<RendezVous> rendezVous = new ArrayList<>();
 }

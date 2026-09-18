@@ -66,7 +66,7 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser, null);
+        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser);
@@ -101,7 +101,7 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser, null);
+        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser);
@@ -139,7 +139,7 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient4", "Test", "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser, null);
+        Patient patient = new Patient(null, "Patient4", "Test", "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser);
         patientRepository.save(patient);
 
         Medecin medecin = new Medecin(null, "Medecin4", "Test", "0633333333", "Generaliste", medecinUser);

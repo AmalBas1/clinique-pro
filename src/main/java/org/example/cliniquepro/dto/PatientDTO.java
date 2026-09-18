@@ -16,6 +16,5 @@ public class PatientDTO {
     private String adresse;
     private LocalDate dateNaissance;
     private Long userId;
-    private Long medecinId;
 
 }
