@@ -8,15 +8,6 @@ CREATE TABLE users (
   role VARCHAR(50)
 ) ;
 
-CREATE TABLE medecins (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  nom VARCHAR(100),
-  prenom VARCHAR(100),
-  telephone VARCHAR(50),
-  specialite VARCHAR(100),
-  user_id BIGINT UNIQUE,
-  FOREIGN KEY (user_id) REFERENCES users(id)
-) ;
 
 CREATE TABLE patients (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -26,9 +17,7 @@ CREATE TABLE patients (
   adresse VARCHAR(255),
   date_naissance DATE,
   user_id BIGINT UNIQUE,
-  medecin_id BIGINT,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (medecin_id) REFERENCES medecins(id)
+  FOREIGN KEY (user_id) REFERENCES users(id)
 ) ;
 
 CREATE TABLE rendezvous (
@@ -36,9 +25,7 @@ CREATE TABLE rendezvous (
   date_rendez_vous DATETIME,
   statut VARCHAR(50),
   patient_id BIGINT,
-  medecin_id BIGINT,
-  FOREIGN KEY (patient_id) REFERENCES patients(id),
-  FOREIGN KEY (medecin_id) REFERENCES medecins(id)
+  FOREIGN KEY (patient_id) REFERENCES patients(id)
 ) ;
 
 CREATE TABLE messages (
