@@ -9,6 +9,16 @@ CREATE TABLE users (
 ) ;
 
 
+CREATE TABLE medecins (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(100),
+  prenom VARCHAR(100),
+  telephone VARCHAR(50),
+  specialite VARCHAR(100),
+  user_id BIGINT UNIQUE,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+) ;
+
 CREATE TABLE patients (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   nom VARCHAR(100),
