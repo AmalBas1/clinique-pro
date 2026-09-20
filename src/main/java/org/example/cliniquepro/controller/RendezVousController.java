@@ -52,7 +52,7 @@ public class RendezVousController {
     }
 
     @PatchMapping("/{id}/statut")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public RendezVousDTO changerStatutRendezVous(@PathVariable Long id,
                                                 @RequestParam StatutRendezVous nouveauStatut) {
         return rendezVousService.changerStatutRendezVous(id, nouveauStatut);
