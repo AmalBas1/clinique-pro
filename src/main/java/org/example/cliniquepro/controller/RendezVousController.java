@@ -46,7 +46,7 @@ public class RendezVousController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public RendezVousDTO mettreAJourRendezVous(@PathVariable Long id, @RequestBody RendezVousDTO rendezVousDTO) {
         return rendezVousService.mettreAJourRendezVous(id, rendezVousDTO);
     }
