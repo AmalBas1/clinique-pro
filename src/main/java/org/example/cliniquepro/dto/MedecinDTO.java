@@ -14,4 +14,5 @@ public class MedecinDTO {
     private String telephone;
     private String specialite;
     private Long userId;
+    private boolean disponible;
 }

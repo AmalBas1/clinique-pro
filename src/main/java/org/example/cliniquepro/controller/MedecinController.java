@@ -54,4 +54,10 @@ public class MedecinController {
     public void supprimerMedecin(@PathVariable Long id) {
         medecinService.supprimerMedecin(id);
     }
+
+    @PostMapping("/{id}/indisponible")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    public MedecinDTO marquerIndisponible(@PathVariable Long id) {
+        return medecinService.marquerIndisponible(id);
+    }
 }

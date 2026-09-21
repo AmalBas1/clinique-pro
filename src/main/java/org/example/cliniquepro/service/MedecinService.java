@@ -9,4 +9,5 @@ public interface MedecinService {
     Page<MedecinDTO> recupererTousLesMedecins(int page, int size, String sort);
     MedecinDTO mettreAJourMedecin(Long id, MedecinDTO medecinDTO);
     void supprimerMedecin(Long id);
+    MedecinDTO marquerIndisponible(Long id);
 }
