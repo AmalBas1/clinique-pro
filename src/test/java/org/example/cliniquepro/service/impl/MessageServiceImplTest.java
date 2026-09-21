@@ -69,7 +69,7 @@ class MessageServiceImplTest {
         Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1991, 1, 1), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Generaliste", medecinUser);
+        Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 1, 15, 9, 0), StatutRendezVous.PENDING, patient, medecin);
@@ -107,7 +107,7 @@ class MessageServiceImplTest {
         Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1987, 4, 4), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser);
+        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 2, 20, 10, 30), StatutRendezVous.CONFIRMED, patient, medecin);
@@ -142,7 +142,7 @@ class MessageServiceImplTest {
         Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 9, 9), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser);
+        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 3, 5, 11, 15), StatutRendezVous.CONFIRMED, patient, medecin);

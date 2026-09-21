@@ -63,7 +63,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Lemoine", "Sophie", "0612345678", "Pediatrie", user);
+        Medecin medecin = new Medecin(null, "Lemoine", "Sophie", "0612345678", "Pediatrie", user, true);
         medecinRepository.save(medecin);
 
         MedecinDTO resultat = medecinService.recupererMedecinParId(medecin.getId());
@@ -81,7 +81,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Dupont", "Jean", "0623456789", "Dermatologie", user);
+        Medecin medecin = new Medecin(null, "Dupont", "Jean", "0623456789", "Dermatologie", user, true);
         medecinRepository.save(medecin);
 
         MedecinDTO dto = new MedecinDTO();
