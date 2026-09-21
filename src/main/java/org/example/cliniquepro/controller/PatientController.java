@@ -2,6 +2,7 @@ package org.example.cliniquepro.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.PatientDTO;
+import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.service.PatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PatientController {
 
     private final PatientService patientService;
+    private final PatientRepository patientRepository;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,5 +55,12 @@ public class PatientController {
     @PreAuthorize("hasRole('ADMIN')")
     public void supprimerPatient(@PathVariable Long id) {
         patientService.supprimerPatient(id);
+    }
+
+
+    @GetMapping("/count")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    public long countPatients() {
+        return patientRepository.count();
     }
 }
