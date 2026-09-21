@@ -103,4 +103,18 @@ public class RendezVousServiceImpl implements RendezVousService {
         RendezVous updatedRendezVous = rendezVousRepository.save(rendezVous);
         return rendezVousMapper.toDTO(updatedRendezVous);
     }
+
+    @Override
+    public Page<RendezVousDTO> recupererRendezVousParPatientId(Long patientId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dateHeure").ascending());
+        Page<RendezVous> rendezVousPage = rendezVousRepository.findByPatientId(patientId, pageable);
+        return rendezVousPage.map(rendezVousMapper::toDTO);
+    }
+
+    @Override
+    public Page<RendezVousDTO> recupererRendezVousParMedecinId(Long medecinId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dateHeure").ascending());
+        Page<RendezVous> rendezVousPage = rendezVousRepository.findByMedecinId(medecinId, pageable);
+        return rendezVousPage.map(rendezVousMapper::toDTO);
+    }
 }

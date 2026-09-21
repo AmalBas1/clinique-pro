@@ -11,4 +11,6 @@ public interface RendezVousService {
     RendezVousDTO mettreAJourRendezVous(Long id, RendezVousDTO rendezVousDTO);
     void supprimerRendezVous(Long id);
     RendezVousDTO changerStatutRendezVous(Long id, StatutRendezVous nouveauStatut);
+    Page<RendezVousDTO> recupererRendezVousParPatientId(Long patientId, int page, int size);
+    Page<RendezVousDTO> recupererRendezVousParMedecinId(Long medecinId, int page, int size);
 }

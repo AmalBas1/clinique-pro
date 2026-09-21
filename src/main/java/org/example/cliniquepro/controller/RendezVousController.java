@@ -72,4 +72,22 @@ public class RendezVousController {
     public long countRendezVous() {
         return rendezVousRepository.count();
     }
+
+    @GetMapping("/patient/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    public Page<RendezVousDTO> recupererRendezVousParPatient(
+            @PathVariable Long patientId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return rendezVousService.recupererRendezVousParPatientId(patientId, page, size);
+    }
+
+    @GetMapping("/medecin/{medecinId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    public Page<RendezVousDTO> recupererRendezVousParMedecin(
+            @PathVariable Long medecinId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return rendezVousService.recupererRendezVousParMedecinId(medecinId, page, size);
+    }
 }
