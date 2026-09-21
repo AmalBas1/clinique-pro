@@ -6,9 +6,9 @@ INSERT INTO users (id, email, password, nom, prenom, role) VALUES
 (5, 'patient2@gmail.com', '$2a$10$X...dummyhash', 'Martin', 'Sophie', 'PATIENT');
 
 
-INSERT INTO medecins (id, nom, prenom, telephone, specialite, user_id) VALUES
-(1, 'House', 'Gregory', '0611223344', 'Cardiologie', 2),
-(2, 'Grey', 'Meredith', '0699887766', 'Généraliste', 3);
+INSERT INTO medecins (id, nom, prenom, telephone, specialite, disponible, user_id) VALUES
+(1, 'House', 'Gregory', '0611223344', 'Cardiologie', TRUE, 2),
+(2, 'Grey', 'Meredith', '0699887766', 'Généraliste', TRUE, 3);
 
 INSERT INTO patients (id, nom, prenom, telephone, adresse, date_naissance, user_id) VALUES
 (1, 'Dupont', 'Jean', '0600112233', '12 Rue de Paris, Casablanca', '1985-05-12', 4),

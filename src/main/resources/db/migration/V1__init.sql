@@ -15,6 +15,7 @@ CREATE TABLE medecins (
   prenom VARCHAR(100),
   telephone VARCHAR(50),
   specialite VARCHAR(100),
+  disponible BOOLEAN DEFAULT TRUE,
   user_id BIGINT UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users(id)
 ) ;

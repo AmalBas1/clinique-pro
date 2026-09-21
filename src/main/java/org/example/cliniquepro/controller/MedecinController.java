@@ -60,4 +60,12 @@ public class MedecinController {
     public MedecinDTO marquerIndisponible(@PathVariable Long id) {
         return medecinService.marquerIndisponible(id);
     }
+    @GetMapping("/disponibles")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    public Page<MedecinDTO> recupererMedecinsDisponibles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ASC") String sort) {
+        return medecinService.recupererMedecinsDisponibles(page, size, sort);
+    }
 }

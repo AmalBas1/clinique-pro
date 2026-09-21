@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -109,6 +110,13 @@ public class MedecinServiceImpl implements MedecinService {
         }
 
         return medecinMapper.toDTO(updatedMedecin);
+    }
+
+    @Override
+    public Page<MedecinDTO> recupererMedecinsDisponibles(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
+        Page<Medecin> medecins = medecinRepository.findByDisponibleTrue(pageable);
+        return medecins.map(medecinMapper::toDTO);
     }
 }
 
