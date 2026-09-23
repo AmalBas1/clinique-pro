@@ -76,4 +76,12 @@ public class MedecinController {
     public long countMedecins() {
         return medecinRepository.count();
     }
+
+    @PutMapping("/user/{userId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ADMIN')")
+    public MedecinDTO updateMedecinByUserId(
+            @PathVariable Long userId,
+            @RequestBody MedecinDTO medecinDTO) {
+        return medecinService.updateMedecinByUserId(userId, medecinDTO);
+    }
 }

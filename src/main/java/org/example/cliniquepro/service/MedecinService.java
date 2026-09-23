@@ -13,4 +13,5 @@ public interface MedecinService {
     void supprimerMedecin(Long id);
     MedecinDTO marquerIndisponible(Long id);
     Page<MedecinDTO> recupererMedecinsDisponibles(int page, int size, String sort);
+    MedecinDTO updateMedecinByUserId(Long userId, MedecinDTO medecinDTO);
 }

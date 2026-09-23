@@ -63,4 +63,18 @@ public class PatientController {
     public long countPatients() {
         return patientRepository.count();
     }
+
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    public PatientDTO recupererPatientParUserId(@PathVariable Long userId) {
+        return patientService.recupererPatientParUserId(userId);
+    }
+
+    @PutMapping("/user/{userId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ADMIN')")
+    public PatientDTO updatePatientByUserId(
+            @PathVariable Long userId,
+            @RequestBody PatientDTO patientDTO) {
+        return patientService.updatePatientByUserId(userId, patientDTO);
+    }
 }

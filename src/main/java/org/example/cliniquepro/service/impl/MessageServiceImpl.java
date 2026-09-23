@@ -2,12 +2,15 @@ package org.example.cliniquepro.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.MessageDTO;
+import org.example.cliniquepro.dto.NotificationDTO;
 import org.example.cliniquepro.entity.Message;
 import org.example.cliniquepro.entity.RendezVous;
+import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.mapper.MessageMapper;
 import org.example.cliniquepro.repository.MessageRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.MessageService;
+import org.example.cliniquepro.service.NotificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +30,7 @@ public class MessageServiceImpl implements MessageService {
     private final RendezVousRepository rendezVousRepository;
     private final MessageMapper messageMapper;
     private final SimpMessagingTemplate messagingTemplate;
+    private final NotificationService notificationService;
 
     @Override
     public MessageDTO creerMessage(MessageDTO messageDTO) {
@@ -52,7 +56,19 @@ public class MessageServiceImpl implements MessageService {
                 responseDTO
         );
 
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setType(TypeNotification.NOUVEAU_MESSAGE);
+        notificationDTO.setRendezVousId(messageDTO.getRendezVousId());
+        notificationDTO.setContenu("Vous avez reçu un nouveau message concernant votre rendez-vous : " + message.getContenu());
+
+        try {
+            notificationService.creerNotification(notificationDTO);
+        } catch (Exception e) {
+            System.err.println("Erreur notification message : " + e.getMessage());
+        }
+
         return responseDTO;
+
     }
 
     @Override
@@ -77,5 +93,14 @@ public class MessageServiceImpl implements MessageService {
             throw new RuntimeException("Message non trouvé avec l'ID : " + id);
         }
         messageRepository.deleteById(id);
+    }
+    @Override
+    public long compterMessagesParPatient(Long patientId) {
+        return messageRepository.countByRendezVous_PatientId(patientId);
+    }
+
+    @Override
+    public long compterMessagesParMedecin(Long medecinId) {
+        return messageRepository.countByRendezVous_MedecinId(medecinId);
     }
 }

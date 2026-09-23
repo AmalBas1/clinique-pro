@@ -118,6 +118,17 @@ public class MedecinServiceImpl implements MedecinService {
         Page<Medecin> medecins = medecinRepository.findByDisponibleTrue(pageable);
         return medecins.map(medecinMapper::toDTO);
     }
+    @Override
+    public MedecinDTO updateMedecinByUserId(Long userId, MedecinDTO medecinDTO) {
+        Medecin medecin = medecinRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profil médecin non trouvé pour cet utilisateur ID: " + userId));
+
+        medecin.setSpecialite(medecinDTO.getSpecialite());
+        medecin.setTelephone(medecinDTO.getTelephone());
+
+        Medecin updatedMedecin = medecinRepository.save(medecin);
+        return medecinMapper.toDTO(updatedMedecin);
+    }
 }
 
 

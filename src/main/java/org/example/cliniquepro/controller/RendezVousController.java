@@ -40,7 +40,7 @@ public class RendezVousController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN','Patient','ROLE_ADMIN', 'ROLE_MEDECIN', 'ROLE_PATIENT')")
     public Page<RendezVousDTO> recupererTousLesRendezVous(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -83,7 +83,7 @@ public class RendezVousController {
     }
 
     @GetMapping("/medecin/{medecinId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'ROLE_MEDECIN')")
     public Page<RendezVousDTO> recupererRendezVousParMedecin(
             @PathVariable Long medecinId,
             @RequestParam(defaultValue = "0") int page,

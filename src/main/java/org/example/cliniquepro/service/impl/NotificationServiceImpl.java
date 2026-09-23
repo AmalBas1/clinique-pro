@@ -101,14 +101,12 @@ public class NotificationServiceImpl implements NotificationService {
                 switch (typeNotification) {
                     case ANNULATION_RDV:
                         sujet = "CliniquePro - Annulation de votre rendez-vous";
-                        rendezVous.setStatut(StatutRendezVous.CANCELLED);
                         break;
                     case RAPPEL_RDV:
                         sujet = "CliniquePro - Rappel de votre rendez-vous";
                         break;
                     case MEDECIN_INDISPONIBLE:
                         sujet = "CliniquePro - Indisponibilité de votre médecin";
-                        rendezVous.setStatut(StatutRendezVous.PENDING);
                         break;
                     case NOUVEAU_MESSAGE:
                         sujet = "CliniquePro - Nouveau message concernant votre rendez-vous";
@@ -117,7 +115,6 @@ public class NotificationServiceImpl implements NotificationService {
             }
 
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("noreply@cliniquepro.com");
             message.setTo(emailDestinataire);
             message.setSubject(sujet);
             message.setText(contenuExistant);

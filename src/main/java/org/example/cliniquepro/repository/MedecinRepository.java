@@ -7,8 +7,10 @@ import org.example.cliniquepro.entity.Medecin;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MedecinRepository extends JpaRepository<Medecin, Long> {
     Page<Medecin> findByDisponibleTrue(Pageable pageable);
+    Optional<Medecin> findByUserId(Long userId);
 }

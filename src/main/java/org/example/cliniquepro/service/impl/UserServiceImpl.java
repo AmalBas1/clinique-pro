@@ -3,8 +3,13 @@ package org.example.cliniquepro.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.UserDTO;
+import org.example.cliniquepro.entity.Medecin;
+import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.User;
+import org.example.cliniquepro.enums.Role;
 import org.example.cliniquepro.mapper.UserMapper;
+import org.example.cliniquepro.repository.MedecinRepository;
+import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.UserRepository;
 import org.example.cliniquepro.service.UserService;
 import org.springframework.data.domain.Page;
@@ -22,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final PatientRepository patientRepository;
+    private final MedecinRepository medecinRepository;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -33,7 +40,24 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getPassword() != null && !userDTO.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
+
         User savedUser = userRepository.save(user);
+
+        Role roleEnum = savedUser.getRole();
+        if (roleEnum != null) {
+            String roleStr = roleEnum.name().toUpperCase();
+
+            if (roleStr.contains("PATIENT")) {
+                Patient patient = new Patient();
+                patient.setUser(savedUser);
+                patientRepository.save(patient);
+            }
+            else if (roleStr.contains("MEDECIN")) {
+                Medecin medecin = new Medecin();
+                medecin.setUser(savedUser);
+                medecinRepository.save(medecin);
+            }
+        }
         return userMapper.toDTO(savedUser);
     }
 

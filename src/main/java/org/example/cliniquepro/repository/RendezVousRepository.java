@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
-    List<RendezVous> findBydateRendezVousBetween(LocalDateTime debut, LocalDateTime fin);
+    List<RendezVous> findByDateRendezVousBetween(LocalDateTime debut, LocalDateTime fin);
     List<RendezVous> findByMedecinId(Long medecinId);
     Page<RendezVous> findByPatientId(Long patientId, Pageable pageable);
     Page<RendezVous> findByMedecinId(Long medecinId, Pageable pageable);

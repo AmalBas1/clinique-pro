@@ -78,4 +78,23 @@ public class PatientServiceImpl implements PatientService {
         }
         patientRepository.deleteById(id);
     }
+    @Override
+    public PatientDTO recupererPatientParUserId(Long userId) {
+        Patient patient = patientRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Patient non trouvé pour cet utilisateur avec l'ID: " + userId));
+
+        return recupererPatientParId(patient.getId());
+    }
+
+    @Override
+    public PatientDTO updatePatientByUserId(Long userId, PatientDTO patientDTO) {
+        Patient patient = patientRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profil patient non trouvé pour cet utilisateur ID: " + userId));
+
+        patient.setTelephone(patientDTO.getTelephone());
+        patient.setAdresse(patientDTO.getAdresse());
+
+        Patient updatedPatient = patientRepository.save(patient);
+        return patientMapper.toDTO(updatedPatient);
+    }
 }

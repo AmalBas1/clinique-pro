@@ -8,4 +8,6 @@ public interface MessageService {
     MessageDTO recupererMessageParId(Long id);
     Page<MessageDTO> recupererMessagesParRendezVous(Long rendezVousId, int page, int size, String sort);
     void supprimerMessage(Long id);
+    long compterMessagesParMedecin(Long medecinId);
+    long compterMessagesParPatient(Long patientId);
 }

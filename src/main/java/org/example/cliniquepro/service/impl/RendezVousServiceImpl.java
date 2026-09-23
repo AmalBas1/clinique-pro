@@ -2,15 +2,18 @@ package org.example.cliniquepro.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.cliniquepro.dto.NotificationDTO;
 import org.example.cliniquepro.dto.RendezVousDTO;
 import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.RendezVous;
 import org.example.cliniquepro.enums.StatutRendezVous;
+import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.mapper.RendezVousMapper;
 import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
+import org.example.cliniquepro.service.NotificationService;
 import org.example.cliniquepro.service.RendezVousService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +30,7 @@ public class RendezVousServiceImpl implements RendezVousService {
     private final PatientRepository patientRepository;
     private final MedecinRepository medecinRepository;
     private final RendezVousMapper rendezVousMapper;
+    private final NotificationService notificationService;
 
     @Override
     public RendezVousDTO creerRendezVous(RendezVousDTO rendezVousDTO) {
@@ -42,6 +46,9 @@ public class RendezVousServiceImpl implements RendezVousService {
             Medecin medecin = medecinRepository.findById(rendezVousDTO.getMedecinId())
                     .orElseThrow(() -> new RuntimeException("Médecin non trouvé avec l'ID : " + rendezVousDTO.getMedecinId()));
             rendezVous.setMedecin(medecin);
+        }
+        if (rendezVous.getStatut() == null) {
+            rendezVous.setStatut(StatutRendezVous.PENDING);
         }
 
         RendezVous savedRendezVous = rendezVousRepository.save(rendezVous);
@@ -101,19 +108,30 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVous.setStatut(nouveauStatut);
 
         RendezVous updatedRendezVous = rendezVousRepository.save(rendezVous);
+
+        if (nouveauStatut == StatutRendezVous.CANCELLED) {
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setType(TypeNotification.ANNULATION_RDV);
+            notificationDTO.setRendezVousId(rendezVous.getId());
+            try {
+                notificationService.creerNotification(notificationDTO);
+            } catch (Exception e) {
+                System.err.println("Erreur notification annulation : " + e.getMessage());
+            }
+        }
         return rendezVousMapper.toDTO(updatedRendezVous);
     }
 
     @Override
     public Page<RendezVousDTO> recupererRendezVousParPatientId(Long patientId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("dateHeure").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dateRendezVous").ascending());
         Page<RendezVous> rendezVousPage = rendezVousRepository.findByPatientId(patientId, pageable);
         return rendezVousPage.map(rendezVousMapper::toDTO);
     }
 
     @Override
     public Page<RendezVousDTO> recupererRendezVousParMedecinId(Long medecinId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("dateHeure").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dateRendezVous").ascending());
         Page<RendezVous> rendezVousPage = rendezVousRepository.findByMedecinId(medecinId, pageable);
         return rendezVousPage.map(rendezVousMapper::toDTO);
     }

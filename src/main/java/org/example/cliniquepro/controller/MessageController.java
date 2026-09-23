@@ -36,7 +36,7 @@ public class MessageController {
     }
 
     @GetMapping("/rendez-vous/{rendezVousId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN','Patient','ROLE_ADMIN', 'ROLE_MEDECIN', 'ROLE_PATIENT')")
     public Page<MessageDTO> recupererMessagesParRendezVous(
             @PathVariable Long rendezVousId,
             @RequestParam(defaultValue = "0") int page,
@@ -51,9 +51,19 @@ public class MessageController {
         messageService.supprimerMessage(id);
     }
 
-    @GetMapping("/count-unread")
+    @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
     public long countMessages() {
         return messageRepository.count();
+    }
+
+    @GetMapping("/count/patient/{patientId}")
+    public long countMessagesPatient(@PathVariable Long patientId) {
+        return messageService.compterMessagesParPatient(patientId);
+    }
+
+    @GetMapping("/count/medecin/{medecinId}")
+    public long countMessagesMedecin(@PathVariable Long medecinId) {
+        return messageService.compterMessagesParMedecin(medecinId);
     }
 }

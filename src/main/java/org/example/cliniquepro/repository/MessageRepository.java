@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
     Page<Message> findByRendezVousId(Long rendezVousId, Pageable pageable);
+    long countByRendezVous_PatientId(Long patientId);
+    long countByRendezVous_MedecinId(Long medecinId);
+
 }

@@ -9,4 +9,6 @@ public interface PatientService {
     Page<PatientDTO> recupererTousLesPatients(int page, int size, String sort);
     PatientDTO mettreAJourPatient(Long id, PatientDTO patientDTO);
     void supprimerPatient(Long id);
+    PatientDTO recupererPatientParUserId(Long userId);
+    PatientDTO updatePatientByUserId(Long userId, PatientDTO patientDTO);
 }
