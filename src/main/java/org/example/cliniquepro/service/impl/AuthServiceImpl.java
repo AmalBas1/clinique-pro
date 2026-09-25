@@ -5,8 +5,13 @@ import org.example.cliniquepro.dto.AuthResponse;
 import org.example.cliniquepro.dto.LoginRequest;
 import org.example.cliniquepro.dto.RegisterRequest;
 import org.example.cliniquepro.dto.UserDTO;
+import org.example.cliniquepro.entity.Medecin;
+import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.User;
+import org.example.cliniquepro.enums.Role;
 import org.example.cliniquepro.mapper.UserMapper;
+import org.example.cliniquepro.repository.MedecinRepository;
+import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.UserRepository;
 import org.example.cliniquepro.security.JwtUtils;
 import org.example.cliniquepro.service.AuthService;
@@ -23,6 +28,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final MedecinRepository medecinRepository;
+    private final PatientRepository patientRepository;
 
     @Override
     public AuthResponse register(RegisterRequest request) {
@@ -38,6 +45,28 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(request.getRole());
 
         User savedUser = userRepository.save(user);
+
+        if (request.getRole() == Role.MEDECIN) {
+            Medecin medecin = new Medecin();
+            medecin.setUser(savedUser);
+            medecin.setNom(request.getNom());
+            medecin.setPrenom(request.getPrenom());
+            medecin.setTelephone(request.getTelephone());
+            medecin.setSpecialite(request.getSpecialite());
+            medecin.setDisponible(true);
+            medecinRepository.save(medecin);
+
+        } else if (request.getRole() == Role.PATIENT) {
+            Patient patient = new Patient();
+            patient.setUser(savedUser);
+            patient.setNom(request.getNom());
+            patient.setPrenom(request.getPrenom());
+            patient.setTelephone(request.getTelephone());
+            patient.setAdresse(request.getAdresse());
+            patient.setDateNaissance(request.getDateNaissance());
+            patientRepository.save(patient);
+        }
+
         String token = jwtUtils.genererToken(savedUser.getEmail(), savedUser.getRole());
         UserDTO userDTO = userMapper.toDTO(savedUser);
 

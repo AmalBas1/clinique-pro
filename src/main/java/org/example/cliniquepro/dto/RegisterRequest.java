@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.cliniquepro.enums.Role;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,4 +31,9 @@ public class RegisterRequest {
 
     @NotNull(message = "le role est obligatoire")
     private Role role;
+
+    private String telephone;
+    private String specialite;
+    private String adresse;
+    private LocalDate dateNaissance;
 }
