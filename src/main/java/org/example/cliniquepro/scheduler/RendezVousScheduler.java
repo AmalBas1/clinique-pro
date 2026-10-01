@@ -6,6 +6,7 @@ import org.example.cliniquepro.entity.RendezVous;
 import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.NotificationService;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@EnableScheduling
 public class RendezVousScheduler {
 
     private final RendezVousRepository rendezVousRepository;
