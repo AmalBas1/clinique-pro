@@ -43,7 +43,7 @@ public class RendezVousController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN','Patient','ROLE_ADMIN', 'ROLE_MEDECIN', 'ROLE_PATIENT')")
     public Page<RendezVousDTO> recupererTousLesRendezVous(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "50") int size,
             @RequestParam(defaultValue = "ASC") String sort) {
         return rendezVousService.recupererTousLesRendezVous(page, size, sort);
     }
@@ -78,7 +78,7 @@ public class RendezVousController {
     public Page<RendezVousDTO> recupererRendezVousParPatient(
             @PathVariable Long patientId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         return rendezVousService.recupererRendezVousParPatientId(patientId, page, size);
     }
 
@@ -87,7 +87,7 @@ public class RendezVousController {
     public Page<RendezVousDTO> recupererRendezVousParMedecin(
             @PathVariable Long medecinId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         return rendezVousService.recupererRendezVousParMedecinId(medecinId, page, size);
     }
 }

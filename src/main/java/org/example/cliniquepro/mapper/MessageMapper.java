@@ -10,15 +10,16 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
 
-    @Mapping(target = "rendezVous", ignore = true)
+    @Mapping(target = "notification", ignore = true)
     @Mapping(target = "id", ignore = true)
     Message toEntity(MessageDTO messageDTO);
 
-    @Mapping(source = "rendezVous.id", target = "rendezVousId")
+    @Mapping(source = "notification.rendezVous.id", target = "rendezVousId")
+    @Mapping(source = "notification.id", target = "notificationId")
     MessageDTO toDTO(Message message);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "rendezVous", ignore = true)
+    @Mapping(target = "notification", ignore = true)
     void updateEntityFromDTO(MessageDTO messageDTO, @MappingTarget Message message);
 
     List<MessageDTO> toDtoList(List<Message> messages);

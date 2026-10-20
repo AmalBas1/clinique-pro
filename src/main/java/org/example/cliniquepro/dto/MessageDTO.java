@@ -13,4 +13,5 @@ public class MessageDTO {
     private LocalDateTime dateEnvoi;
     private String expediteurRole;
     private Long rendezVousId;
+    private Long notificationId;
 }

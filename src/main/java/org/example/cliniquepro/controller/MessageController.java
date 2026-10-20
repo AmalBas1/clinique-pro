@@ -40,7 +40,7 @@ public class MessageController {
     public Page<MessageDTO> recupererMessagesParRendezVous(
             @PathVariable Long rendezVousId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "50") int size,
             @RequestParam(defaultValue = "ASC") String sort) {
         return messageService.recupererMessagesParRendezVous(rendezVousId, page, size, sort);
     }
