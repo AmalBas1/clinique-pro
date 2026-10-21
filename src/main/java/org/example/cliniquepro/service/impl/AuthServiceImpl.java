@@ -49,8 +49,6 @@ public class AuthServiceImpl implements AuthService {
         if (request.getRole() == Role.MEDECIN) {
             Medecin medecin = new Medecin();
             medecin.setUser(savedUser);
-            medecin.setNom(request.getNom());
-            medecin.setPrenom(request.getPrenom());
             medecin.setTelephone(request.getTelephone());
             medecin.setSpecialite(request.getSpecialite());
             medecin.setDisponible(true);
@@ -59,8 +57,6 @@ public class AuthServiceImpl implements AuthService {
         } else if (request.getRole() == Role.PATIENT) {
             Patient patient = new Patient();
             patient.setUser(savedUser);
-            patient.setNom(request.getNom());
-            patient.setPrenom(request.getPrenom());
             patient.setTelephone(request.getTelephone());
             patient.setAdresse(request.getAdresse());
             patient.setDateNaissance(request.getDateNaissance());

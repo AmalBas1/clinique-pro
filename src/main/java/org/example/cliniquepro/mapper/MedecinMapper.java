@@ -15,6 +15,8 @@ public interface MedecinMapper {
     Medecin toEntity(MedecinDTO medecinDTO);
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.nom", target = "nom")
+    @Mapping(source = "user.prenom", target = "prenom")
     MedecinDTO toDTO(Medecin medecin);
 
     @Mapping(target = "id", ignore = true)

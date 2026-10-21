@@ -63,7 +63,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Lemoine", "Sophie", "0612345678", "Pediatrie", user, true);
+        Medecin medecin = new Medecin(null, "0612345678", "Pediatrie", user, true);
         medecinRepository.save(medecin);
 
         MedecinDTO resultat = medecinService.recupererMedecinParId(medecin.getId());
@@ -81,7 +81,7 @@ class MedecinServiceImplTest {
         user.setRole(Role.MEDECIN);
         userRepository.save(user);
 
-        Medecin medecin = new Medecin(null, "Dupont", "Jean", "0623456789", "Dermatologie", user, true);
+        Medecin medecin = new Medecin(null, "0623456789", "Dermatologie", user, true);
         medecinRepository.save(medecin);
 
         MedecinDTO dto = new MedecinDTO();
@@ -93,5 +93,55 @@ class MedecinServiceImplTest {
         MedecinDTO resultat = medecinService.mettreAJourMedecin(medecin.getId(), dto);
 
         assertEquals("NouveauNom", resultat.getNom());
+        medecinRepository.flush();
+        assertEquals("NouveauNom", userRepository.findById(user.getId()).orElseThrow().getNom());
+    }
+
+    @Test
+    void lireIdentiteDepuisUtilisateur() {
+        User user = new User();
+        user.setEmail("identite-medecin@test.com");
+        user.setNom("Initial");
+        user.setPrenom("Avant");
+        user.setRole(Role.MEDECIN);
+        userRepository.save(user);
+
+        Medecin profile = new Medecin();
+        profile.setUser(user);
+        medecinRepository.save(profile);
+
+        user.setNom("ModifieDansUser");
+        user.setPrenom("Apres");
+        userRepository.saveAndFlush(user);
+
+        MedecinDTO dto = medecinService.recupererMedecinParId(profile.getId());
+        assertEquals("ModifieDansUser", dto.getNom());
+        assertEquals("Apres", dto.getPrenom());
+        assertEquals(user.getId(), dto.getUserId());
+    }
+
+    @Autowired
+    private jakarta.persistence.EntityManager entityManager;
+
+    @Test
+    void supprimerProfilLieUtilisateur() {
+        User user = new User();
+        user.setEmail("suppression-medecin@test.com");
+        user.setRole(Role.MEDECIN);
+        userRepository.save(user);
+        Medecin profile = new Medecin();
+        profile.setUser(user);
+        user.setMedecin(profile);
+        medecinRepository.saveAndFlush(profile);
+        Long profileId = profile.getId();
+        Long userId = user.getId();
+        entityManager.clear();
+
+        medecinService.supprimerMedecin(profileId);
+        medecinRepository.flush();
+        entityManager.clear();
+
+        org.junit.jupiter.api.Assertions.assertFalse(medecinRepository.existsById(profileId));
+        org.junit.jupiter.api.Assertions.assertTrue(userRepository.existsById(userId));
     }
 }

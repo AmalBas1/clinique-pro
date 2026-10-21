@@ -44,6 +44,17 @@ public class MedecinServiceImpl implements MedecinService {
             medecin.setUser(user);
         }
 
+        User user = medecin.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (medecinDTO.getNom() != null) {
+            user.setNom(medecinDTO.getNom());
+        }
+        if (medecinDTO.getPrenom() != null) {
+            user.setPrenom(medecinDTO.getPrenom());
+        }
+
         Medecin savedMedecin = medecinRepository.save(medecin);
         return medecinMapper.toDTO(savedMedecin);
     }
@@ -75,16 +86,32 @@ public class MedecinServiceImpl implements MedecinService {
             existingMedecin.setUser(user);
         }
 
+        User user = existingMedecin.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (medecinDTO.getNom() != null) {
+            user.setNom(medecinDTO.getNom());
+        }
+        if (medecinDTO.getPrenom() != null) {
+            user.setPrenom(medecinDTO.getPrenom());
+        }
+
         Medecin updatedMedecin = medecinRepository.save(existingMedecin);
         return medecinMapper.toDTO(updatedMedecin);
     }
 
     @Override
     public void supprimerMedecin(Long id) {
-        if (!medecinRepository.existsById(id)) {
-            throw new RuntimeException("Médecin non trouvé avec l'ID : " + id);
+        Medecin medecin = medecinRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profil introuvable : " + id));
+
+        User user = medecin.getUser();
+        if (user != null) {
+            user.setMedecin(null);
         }
-        medecinRepository.deleteById(id);
+        medecinRepository.delete(medecin);
+        medecinRepository.flush();
     }
 
     @Override
@@ -93,6 +120,7 @@ public class MedecinServiceImpl implements MedecinService {
                 .orElseThrow(() -> new RuntimeException("Médecin non trouvé avec l'ID : " + id));
 
         medecin.setDisponible(false);
+
         Medecin updatedMedecin = medecinRepository.save(medecin);
 
         List<RendezVous> rdvs = rendezVousRepository.findByMedecinId(id);
@@ -126,9 +154,20 @@ public class MedecinServiceImpl implements MedecinService {
         medecin.setSpecialite(medecinDTO.getSpecialite());
         medecin.setTelephone(medecinDTO.getTelephone());
 
+        User user = medecin.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (medecinDTO.getNom() != null) {
+            user.setNom(medecinDTO.getNom());
+        }
+        if (medecinDTO.getPrenom() != null) {
+            user.setPrenom(medecinDTO.getPrenom());
+        }
+
         Medecin updatedMedecin = medecinRepository.save(medecin);
         return medecinMapper.toDTO(updatedMedecin);
     }
-}
 
+}
 

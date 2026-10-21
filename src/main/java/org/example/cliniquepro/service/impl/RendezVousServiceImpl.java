@@ -11,6 +11,8 @@ import org.example.cliniquepro.enums.StatutRendezVous;
 import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.mapper.RendezVousMapper;
 import org.example.cliniquepro.repository.MedecinRepository;
+import org.example.cliniquepro.repository.MessageRepository;
+import org.example.cliniquepro.repository.NotificationRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.NotificationService;
@@ -27,6 +29,8 @@ import org.springframework.stereotype.Service;
 public class RendezVousServiceImpl implements RendezVousService {
 
     private final RendezVousRepository rendezVousRepository;
+    private final MessageRepository messageRepository;
+    private final NotificationRepository notificationRepository;
     private final PatientRepository patientRepository;
     private final MedecinRepository medecinRepository;
     private final RendezVousMapper rendezVousMapper;
@@ -98,7 +102,8 @@ public class RendezVousServiceImpl implements RendezVousService {
         if (!rendezVousRepository.existsById(id)) {
             throw new RuntimeException("Rendez-vous non trouvé avec l'ID : " + id);
         }
-        rendezVousRepository.deleteById(id);
+        messageRepository.deleteByNotification_RendezVousId(id);
+        notificationRepository.deleteByRendezVousId(id);
     }
     @Override
     public RendezVousDTO changerStatutRendezVous(Long id, StatutRendezVous nouveauStatut) {
