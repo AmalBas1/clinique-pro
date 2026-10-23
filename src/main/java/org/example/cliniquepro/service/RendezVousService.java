@@ -5,6 +5,7 @@ import org.example.cliniquepro.enums.StatutRendezVous;
 import org.springframework.data.domain.Page;
 
 public interface RendezVousService {
+    long countRendezVous();
     RendezVousDTO creerRendezVous(RendezVousDTO rendezVousDTO);
     RendezVousDTO recupererRendezVousParId(Long id);
     Page<RendezVousDTO> recupererTousLesRendezVous(int page, int size, String sort);

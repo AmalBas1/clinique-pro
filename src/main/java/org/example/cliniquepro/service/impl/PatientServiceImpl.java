@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
+    @Override
+    public long countPatients() {
+        return patientRepository.count();
+    }
+
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final PatientMapper patientMapper;
@@ -34,6 +39,16 @@ public class PatientServiceImpl implements PatientService {
             patient.setUser(user);
         }
 
+        User user = patient.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (patientDTO.getNom() != null) {
+            user.setNom(patientDTO.getNom());
+        }
+        if (patientDTO.getPrenom() != null) {
+            user.setPrenom(patientDTO.getPrenom());
+        }
 
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toDTO(savedPatient);
@@ -66,6 +81,16 @@ public class PatientServiceImpl implements PatientService {
             existingPatient.setUser(user);
         }
 
+        User user = existingPatient.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (patientDTO.getNom() != null) {
+            user.setNom(patientDTO.getNom());
+        }
+        if (patientDTO.getPrenom() != null) {
+            user.setPrenom(patientDTO.getPrenom());
+        }
 
         Patient updatedPatient = patientRepository.save(existingPatient);
         return patientMapper.toDTO(updatedPatient);
@@ -73,10 +98,15 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void supprimerPatient(Long id) {
-        if (!patientRepository.existsById(id)) {
-            throw new RuntimeException("Patient non trouvé avec l'ID : " + id);
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profil introuvable : " + id));
+
+        User user = patient.getUser();
+        if (user != null) {
+            user.setPatient(null);
         }
-        patientRepository.deleteById(id);
+        patientRepository.delete(patient);
+        patientRepository.flush();
     }
     @Override
     public PatientDTO recupererPatientParUserId(Long userId) {
@@ -94,7 +124,19 @@ public class PatientServiceImpl implements PatientService {
         patient.setTelephone(patientDTO.getTelephone());
         patient.setAdresse(patientDTO.getAdresse());
 
+        User user = patient.getUser();
+        if (user == null) {
+            throw new IllegalArgumentException("Ce profil doit etre lie a un utilisateur.");
+        }
+        if (patientDTO.getNom() != null) {
+            user.setNom(patientDTO.getNom());
+        }
+        if (patientDTO.getPrenom() != null) {
+            user.setPrenom(patientDTO.getPrenom());
+        }
+
         Patient updatedPatient = patientRepository.save(patient);
         return patientMapper.toDTO(updatedPatient);
     }
+
 }

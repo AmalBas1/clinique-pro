@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.MessageDTO;
 import org.example.cliniquepro.dto.NotificationDTO;
 import org.example.cliniquepro.entity.Message;
+import org.example.cliniquepro.entity.Notification;
 import org.example.cliniquepro.entity.RendezVous;
 import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.mapper.MessageMapper;
 import org.example.cliniquepro.repository.MessageRepository;
+import org.example.cliniquepro.repository.NotificationRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.MessageService;
 import org.example.cliniquepro.service.NotificationService;
@@ -28,54 +30,53 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final RendezVousRepository rendezVousRepository;
+    private final NotificationRepository notificationRepository;
     private final MessageMapper messageMapper;
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificationService notificationService;
 
     @Override
     public MessageDTO creerMessage(MessageDTO messageDTO) {
-        Message message = messageMapper.toEntity(messageDTO);
-
-        if (messageDTO.getRendezVousId() != null) {
-            RendezVous rendezVous = rendezVousRepository.findById(messageDTO.getRendezVousId())
-                    .orElseThrow(() -> new RuntimeException("Rendez-vous non trouvé avec l'ID : " + messageDTO.getRendezVousId()));
-            message.setRendezVous(rendezVous);
-        } else {
-            throw new RuntimeException("Un message doit obligatoirement être lié à un rendez-vous.");
+        if (messageDTO.getRendezVousId() == null) {
+            throw new RuntimeException("Un message doit obligatoirement etre lie a un rendez-vous.");
         }
+        RendezVous rendezVous = rendezVousRepository.findById(messageDTO.getRendezVousId())
+                .orElseThrow(() -> new RuntimeException("Rendez-vous non trouve avec l'ID : " + messageDTO.getRendezVousId()));
 
+        Message message = messageMapper.toEntity(messageDTO);
         if (message.getDateEnvoi() == null) {
             message.setDateEnvoi(LocalDateTime.now());
         }
 
         Message savedMessage = messageRepository.save(message);
         MessageDTO responseDTO = messageMapper.toDTO(savedMessage);
+        responseDTO.setRendezVousId(rendezVous.getId());
 
-        messagingTemplate.convertAndSend(
-                "/topic/rendez-vous/" + messageDTO.getRendezVousId(),
-                responseDTO
-        );
+        messagingTemplate.convertAndSend("/topic/rendez-vous/" + rendezVous.getId(), responseDTO);
 
         NotificationDTO notificationDTO = new NotificationDTO();
         notificationDTO.setType(TypeNotification.NOUVEAU_MESSAGE);
-        notificationDTO.setRendezVousId(messageDTO.getRendezVousId());
-        notificationDTO.setContenu("Vous avez reçu un nouveau message concernant votre rendez-vous : " + message.getContenu());
-
+        notificationDTO.setRendezVousId(rendezVous.getId());
+        notificationDTO.setContenu("Vous avez recu un nouveau message concernant votre rendez-vous : " + savedMessage.getContenu());
         try {
-            notificationService.creerNotification(notificationDTO);
+            NotificationDTO savedNotificationDTO = notificationService.creerNotification(notificationDTO);
+            Notification notification = notificationRepository.findById(savedNotificationDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Notification creee introuvable."));
+            savedMessage.setNotification(notification);
+            messageRepository.save(savedMessage);
+            responseDTO.setNotificationId(notification.getId());
         } catch (Exception e) {
             System.err.println("Erreur notification message : " + e.getMessage());
         }
 
         return responseDTO;
-
     }
 
     @Override
     @Transactional(readOnly = true)
     public MessageDTO recupererMessageParId(Long id) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new RuntimeException("Message non trouve avec l'ID : " + id));
         return messageMapper.toDTO(message);
     }
 
@@ -83,24 +84,29 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(readOnly = true)
     public Page<MessageDTO> recupererMessagesParRendezVous(Long rendezVousId, int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(sort), "id");
-        Page<Message> messages = messageRepository.findByRendezVousId(rendezVousId, pageable);
+        Page<Message> messages = messageRepository.findByNotification_RendezVousId(rendezVousId, pageable);
         return messages.map(messageMapper::toDTO);
     }
 
     @Override
     public void supprimerMessage(Long id) {
         if (!messageRepository.existsById(id)) {
-            throw new RuntimeException("Message non trouvé avec l'ID : " + id);
+            throw new RuntimeException("Message non trouve avec l'ID : " + id);
         }
         messageRepository.deleteById(id);
     }
+
     @Override
     public long compterMessagesParPatient(Long patientId) {
-        return messageRepository.countByRendezVous_PatientId(patientId);
+        return messageRepository.countByNotification_RendezVous_PatientId(patientId);
     }
 
     @Override
     public long compterMessagesParMedecin(Long medecinId) {
-        return messageRepository.countByRendezVous_MedecinId(medecinId);
+        return messageRepository.countByNotification_RendezVous_MedecinId(medecinId);
+    }
+    @Override
+    public long countMessages() {
+        return messageRepository.count();
     }
 }

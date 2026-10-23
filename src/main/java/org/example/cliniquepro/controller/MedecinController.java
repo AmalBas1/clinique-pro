@@ -2,7 +2,6 @@ package org.example.cliniquepro.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.MedecinDTO;
-import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.service.MedecinService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MedecinController {
 
     private final MedecinService medecinService;
-    private  final MedecinRepository medecinRepository;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,7 +75,7 @@ public class MedecinController {
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
     public long countMedecins() {
-        return medecinRepository.count();
+        return medecinService.countMedecins();
     }
 
     @PutMapping("/user/{userId}")

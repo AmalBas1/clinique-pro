@@ -2,8 +2,6 @@ package org.example.cliniquepro.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.cliniquepro.enums.Role;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,7 +22,7 @@ public class Message {
 
     private String expediteurRole;
 
-    @ManyToOne
-    @JoinColumn(name = "rendez_vous_id")
-    private RendezVous rendezVous;
+    @OneToOne
+    @JoinColumn(name = "notification_id", unique = true)
+    private Notification notification;
 }

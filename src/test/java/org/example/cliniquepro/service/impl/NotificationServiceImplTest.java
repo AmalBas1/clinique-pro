@@ -66,10 +66,10 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser);
+        Patient patient = new Patient(null, "0711111111", "Lyon", LocalDate.of(1993, 8, 10), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0611111111", "Cardiologie", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 5, 12, 8, 30), StatutRendezVous.CONFIRMED, patient, medecin);
@@ -101,10 +101,10 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser);
+        Patient patient = new Patient(null, "0722222222", "Nice", LocalDate.of(1988, 11, 25), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0622222222", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 6, 18, 15, 45), StatutRendezVous.CONFIRMED, patient, medecin);
@@ -139,10 +139,10 @@ class NotificationServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient4", "Test", "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser);
+        Patient patient = new Patient(null, "0733333333", "Bordeaux", LocalDate.of(1991, 5, 7), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin4", "Test", "0633333333", "Generaliste", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0633333333", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 7, 3, 13, 15), StatutRendezVous.PENDING, patient, medecin);

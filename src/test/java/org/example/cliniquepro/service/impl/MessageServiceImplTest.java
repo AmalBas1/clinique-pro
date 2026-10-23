@@ -3,13 +3,16 @@ package org.example.cliniquepro.service.impl;
 import org.example.cliniquepro.dto.MessageDTO;
 import org.example.cliniquepro.entity.Medecin;
 import org.example.cliniquepro.entity.Message;
+import org.example.cliniquepro.entity.Notification;
 import org.example.cliniquepro.entity.Patient;
 import org.example.cliniquepro.entity.RendezVous;
 import org.example.cliniquepro.entity.User;
 import org.example.cliniquepro.enums.Role;
 import org.example.cliniquepro.enums.StatutRendezVous;
+import org.example.cliniquepro.enums.TypeNotification;
 import org.example.cliniquepro.repository.MedecinRepository;
 import org.example.cliniquepro.repository.MessageRepository;
+import org.example.cliniquepro.repository.NotificationRepository;
 import org.example.cliniquepro.repository.PatientRepository;
 import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.repository.UserRepository;
@@ -35,6 +38,9 @@ class MessageServiceImplTest {
     private MessageService messageService;
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -66,10 +72,10 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient", "Test", "0700000000", "Paris", LocalDate.of(1991, 1, 1), patientUser);
+        Patient patient = new Patient(null, "0700000000", "Paris", LocalDate.of(1991, 1, 1), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin", "Test", "0600000000", "Generaliste", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0600000000", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 1, 15, 9, 0), StatutRendezVous.PENDING, patient, medecin);
@@ -104,16 +110,16 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient2", "Test", "0711111111", "Lyon", LocalDate.of(1987, 4, 4), patientUser);
+        Patient patient = new Patient(null, "0711111111", "Lyon", LocalDate.of(1987, 4, 4), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin2", "Test", "0611111111", "Cardiologie", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0611111111", "Cardiologie", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 2, 20, 10, 30), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
-        Message message = new Message(null, "Merci pour votre message", LocalDateTime.now(), "MEDECIN", rendezVous);
+        Message message = new Message(null, "Merci pour votre message", LocalDateTime.now(), "MEDECIN", creerNotification(rendezVous));
         messageRepository.save(message);
 
         MessageDTO resultat = messageService.recupererMessageParId(message.getId());
@@ -139,17 +145,17 @@ class MessageServiceImplTest {
         medecinUser.setRole(Role.MEDECIN);
         userRepository.save(medecinUser);
 
-        Patient patient = new Patient(null, "Patient3", "Test", "0722222222", "Nice", LocalDate.of(1985, 9, 9), patientUser);
+        Patient patient = new Patient(null, "0722222222", "Nice", LocalDate.of(1985, 9, 9), patientUser);
         patientRepository.save(patient);
 
-        Medecin medecin = new Medecin(null, "Medecin3", "Test", "0622222222", "Generaliste", medecinUser,true);
+        Medecin medecin = new Medecin(null, "0622222222", "Generaliste", medecinUser,true);
         medecinRepository.save(medecin);
 
         RendezVous rendezVous = new RendezVous(null, LocalDateTime.of(2026, 3, 5, 11, 15), StatutRendezVous.CONFIRMED, patient, medecin);
         rendezVousRepository.save(rendezVous);
 
-        Message message1 = new Message(null, "Premier message", LocalDateTime.now(), "MEDECIN", rendezVous);
-        Message message2 = new Message(null, "Deuxième message", LocalDateTime.now(), "PATIENT", rendezVous);
+        Message message1 = new Message(null, "Premier message", LocalDateTime.now(), "MEDECIN", creerNotification(rendezVous));
+        Message message2 = new Message(null, "Deuxième message", LocalDateTime.now(), "PATIENT", creerNotification(rendezVous));
         messageRepository.save(message1);
         messageRepository.save(message2);
 
@@ -157,5 +163,14 @@ class MessageServiceImplTest {
 
         assertEquals(2, resultat.getTotalElements());
         assertEquals("Premier message", resultat.getContent().get(0).getContenu());
+    }
+
+    private Notification creerNotification(RendezVous rendezVous) {
+        Notification notification = new Notification();
+        notification.setContenu("Notification de test");
+        notification.setDateCreation(LocalDateTime.now());
+        notification.setType(TypeNotification.NOUVEAU_MESSAGE);
+        notification.setRendezVous(rendezVous);
+        return notificationRepository.save(notification);
     }
 }

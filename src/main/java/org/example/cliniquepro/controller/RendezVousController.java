@@ -3,7 +3,6 @@ package org.example.cliniquepro.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.RendezVousDTO;
 import org.example.cliniquepro.enums.StatutRendezVous;
-import org.example.cliniquepro.repository.RendezVousRepository;
 import org.example.cliniquepro.service.RendezVousService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RendezVousController {
 
     private final RendezVousService rendezVousService;
-    private final RendezVousRepository rendezVousRepository;
 
 
     @PostMapping
@@ -43,7 +41,7 @@ public class RendezVousController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN','Patient','ROLE_ADMIN', 'ROLE_MEDECIN', 'ROLE_PATIENT')")
     public Page<RendezVousDTO> recupererTousLesRendezVous(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "50") int size,
             @RequestParam(defaultValue = "ASC") String sort) {
         return rendezVousService.recupererTousLesRendezVous(page, size, sort);
     }
@@ -70,7 +68,7 @@ public class RendezVousController {
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public long countRendezVous() {
-        return rendezVousRepository.count();
+        return rendezVousService.countRendezVous();
     }
 
     @GetMapping("/patient/{patientId}")
@@ -78,7 +76,7 @@ public class RendezVousController {
     public Page<RendezVousDTO> recupererRendezVousParPatient(
             @PathVariable Long patientId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         return rendezVousService.recupererRendezVousParPatientId(patientId, page, size);
     }
 
@@ -87,7 +85,7 @@ public class RendezVousController {
     public Page<RendezVousDTO> recupererRendezVousParMedecin(
             @PathVariable Long medecinId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         return rendezVousService.recupererRendezVousParMedecinId(medecinId, page, size);
     }
 }

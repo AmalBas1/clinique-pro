@@ -23,6 +23,7 @@ public class AuthController {
         return authService.login(request);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
