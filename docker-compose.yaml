@@ -24,7 +24,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/clinique_pro
       SPRING_DATASOURCE_USERNAME: ${username}
       SPRING_DATASOURCE_PASSWORD: ${mdpdb}
-      JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      JWT_SECRET: ${JWT_SECRET}
     networks:
       - health-net
 
