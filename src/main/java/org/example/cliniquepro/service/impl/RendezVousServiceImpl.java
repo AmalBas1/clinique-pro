@@ -28,6 +28,11 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class RendezVousServiceImpl implements RendezVousService {
 
+    @Override
+    public long countRendezVous() {
+        return rendezVousRepository.count();
+    }
+
     private final RendezVousRepository rendezVousRepository;
     private final MessageRepository messageRepository;
     private final NotificationRepository notificationRepository;

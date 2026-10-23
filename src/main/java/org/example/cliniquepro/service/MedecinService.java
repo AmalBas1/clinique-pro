@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface MedecinService {
+    long countMedecins();
     MedecinDTO creerMedecin(MedecinDTO medecinDTO);
     MedecinDTO recupererMedecinParId(Long id);
     Page<MedecinDTO> recupererTousLesMedecins(int page, int size, String sort);

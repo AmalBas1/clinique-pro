@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
+    @Override
+    public long countPatients() {
+        return patientRepository.count();
+    }
+
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final PatientMapper patientMapper;

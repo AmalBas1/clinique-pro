@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -6,23 +5,37 @@ services:
     environment:
       MYSQL_DATABASE: clinique_pro
       MYSQL_ROOT_PASSWORD: ${mdpdb}
-    networks:
-      - health-net
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - health-net
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/clinique_pro
-      - SPRING_DATASOURCE_USERNAME=${username}
-      - SPRING_DATASOURCE_PASSWORD=${mdpdb}
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/clinique_pro
+      SPRING_DATASOURCE_USERNAME: ${username}
+      SPRING_DATASOURCE_PASSWORD: ${mdpdb}
+      JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    networks:
+      - health-net
+
+  frontend:
+    build:
+      context: "C:/Users/A D M I N/Desktop/clinique-pro-front"
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
     networks:
       - health-net
 

@@ -28,6 +28,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class MedecinServiceImpl implements MedecinService {
 
+    @Override
+    public long countMedecins() {
+        return medecinRepository.count();
+    }
+
     private final MedecinRepository medecinRepository;
     private final UserRepository userRepository;
     private final RendezVousRepository rendezVousRepository;

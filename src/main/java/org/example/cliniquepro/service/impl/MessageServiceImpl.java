@@ -105,4 +105,8 @@ public class MessageServiceImpl implements MessageService {
     public long compterMessagesParMedecin(Long medecinId) {
         return messageRepository.countByNotification_RendezVous_MedecinId(medecinId);
     }
+    @Override
+    public long countMessages() {
+        return messageRepository.count();
+    }
 }

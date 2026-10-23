@@ -2,7 +2,6 @@ package org.example.cliniquepro.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cliniquepro.dto.MessageDTO;
-import org.example.cliniquepro.repository.MessageRepository;
 import org.example.cliniquepro.service.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     private final MessageService messageService;
-    private final MessageRepository messageRepository;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
@@ -54,7 +52,7 @@ public class MessageController {
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN', 'PATIENT')")
     public long countMessages() {
-        return messageRepository.count();
+        return messageService.countMessages();
     }
 
     @GetMapping("/count/patient/{patientId}")

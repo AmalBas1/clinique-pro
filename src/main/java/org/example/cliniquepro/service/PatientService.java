@@ -4,6 +4,7 @@ import org.example.cliniquepro.dto.PatientDTO;
 import org.springframework.data.domain.Page;
 
 public interface PatientService {
+    long countPatients();
     PatientDTO creerPatient(PatientDTO patientDTO);
     PatientDTO recupererPatientParId(Long id);
     Page<PatientDTO> recupererTousLesPatients(int page, int size, String sort);
